@@ -10,10 +10,10 @@ os.chdir(head)
 percorso = os.getcwd()
 
 # CONSTANT
-srcGitDirectory = "https://github.com/deMartiniFrancesco/DeMartiniFrancesco-5BI-2022-2023/tree/master"
+srcGitDirectory = "https://github.com/deMartiniFrancesco/5BI-DeMartiniFrancesco-2022-2023/tree/master"
 readmePath = "/doc/README.md"
 # README
-intestazioneMD = """# DeMartiniFrancesco-5BI-2022-2023
+intestazioneMD = """# 5BI-DeMartiniFrancesco-2022-2023
 
 """
 lastMD = """## Last
