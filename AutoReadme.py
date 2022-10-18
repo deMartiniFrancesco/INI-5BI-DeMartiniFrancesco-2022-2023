@@ -91,6 +91,6 @@ boold = True
 if __name__ == "__main__":
     if boold:
         print("Start")
-        updateMD(head + "/src/", "demartini_F_", "")
+        updateMD(head + "/src/", "demartini_F_", "C:/Users/francesco/Documents/School/5BI-DeMartiniFrancesco-2022-2023/src/demartini_F_Jdbc")
     if boold:
         print("End")
