@@ -1,10 +1,7 @@
 name: Run Py Script
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  push
 
 jobs:
   build:
@@ -29,23 +26,23 @@ jobs:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
         run: python .github/scrpts/AutoReadme.py
-        
+
       - name: Check diff
-        - uses: technote-space/get-diff-action@v6
-          with:
-            FILES: |
-              README.md
+                - uses: technote-space/get-diff-action@v6
+                with:
+                  FILES: |
+                    README.md
 
       if: env.GIT_DIFF && env.MATCHED_FILES
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "bot: Update Readme" -a
+            - name: Commit files
+            run: |
+              git config --local user.email "action@github.com"
+              git config --local user.name "GitHub Action"
+              git add -A
+              git commit -m "bot: Update Readme" -a
 
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+            - name: Push changes
+              uses: ad-m/github-push-action@v0.6.0
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                branch: master
