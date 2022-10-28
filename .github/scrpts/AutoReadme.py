@@ -30,35 +30,35 @@ projectsMD = """
 """
 
 
-def lastProjectString(dirUpdated):
+def last_project_string(dir_updated):
     string = "| null | null |\n"
-    if dirUpdated != "":
-        top, end = os.path.split(dirUpdated)
-        src = Path(dirUpdated).resolve().parts
-        srcName = src[len(src) - 2]
+    if dir_updated != "":
+        top, end = os.path.split(dir_updated)
+        src = Path(dir_updated).resolve().parts
+        src_name = src[len(src) - 2]
         string = "| " + \
                  "[" + end + "]" + \
-                 "(" + srcGitDirectory + "/" + srcName + "/" + end + "/bin)" + \
+                 "(" + srcGitDirectory + "/" + src_name + "/" + end + "/bin)" + \
                  " | " + \
                  "[ReadMe]" + \
-                 "(" + srcGitDirectory + "/" + srcName + "/" + end + readmePath + ")" + \
+                 "(" + srcGitDirectory + "/" + src_name + "/" + end + readmePath + ")" + \
                  " |" + \
                  "\n"
     return string
 
 
-def projectsString(srcDirectory, dirProjectName):
+def projects_string(src_directory, dir_project_name):
     string = ""
-    for directory in os.listdir(srcDirectory):
-        srcName = Path(srcDirectory).resolve().name
+    for directory in os.listdir(src_directory):
+        src_name = Path(src_directory).resolve().name
 
-        if directory.startswith(dirProjectName):
+        if directory.startswith(dir_project_name):
             string += "| " + \
                       "[" + directory + "]" + \
-                      "(" + srcGitDirectory + "/" + srcName + "/" + directory + "/bin)" + \
+                      "(" + srcGitDirectory + "/" + src_name + "/" + directory + "/bin)" + \
                       " | " + \
                       "[ReadMe]" + \
-                      "(" + srcGitDirectory + "/" + srcName + "/" + directory + readmePath + ")" + \
+                      "(" + srcGitDirectory + "/" + src_name + "/" + directory + readmePath + ")" + \
                       " |" + \
                       "\n"
         else:
@@ -66,31 +66,39 @@ def projectsString(srcDirectory, dirProjectName):
     return string
 
 
-def writeReadme(lastString, projectString):
+def write_readme(last_string, project_string):
     try:
-        fileReadme = open(head + "//README.md", "w")
+        file_readme = open(head + "//README.md", "w")
 
-        fileReadme.write(
+        file_readme.write(
             intestazioneMD +
             lastMD +
-            lastString +
+            last_string +
             projectsMD +
-            projectString
+            project_string
         )
-        fileReadme.close()
-    except IOError:
+        file_readme.close()
+    except IOError as error:
+        print(error)
         return False
     return True
 
 
-def updateMD(srcDirectory, dirProjectName, dirUpdated):
-    return writeReadme(lastProjectString(dirUpdated), projectsString(srcDirectory, dirProjectName))
+def update_md(src_directory, dir_project_name, dir_updated):
+    return write_readme(last_project_string(dir_updated), projects_string(src_directory, dir_project_name))
 
 
 boold = True
 if __name__ == "__main__":
     if boold:
         print("Start")
-        # updateMD(head + "/src/", "demartini_F_", "C:/Users/francesco/Documents/School/5BI-DeMartiniFrancesco-2022-2023/src/demartini_F_Jdbc")
+
+    print(head)
+    
+    # update_md(
+    #     head + "/src/",
+    #     "demartini_F_",
+    #     "C:/Users/francesco/Documents/School/5BI-DeMartiniFrancesco-2022-2023/src/demartini_F_Jdbc"
+    # )
     if boold:
         print("End")
