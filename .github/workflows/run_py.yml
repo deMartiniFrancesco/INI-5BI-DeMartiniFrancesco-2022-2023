@@ -31,14 +31,21 @@ jobs:
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
         run: python .github/scrpts/AutoReadme.py
 
-      - name: commit files
+      - uses: actions/checkout@v2
+      - uses: technote-space/get-diff-action@v6
+        with:
+          FILES: |
+            README.md
+
+      if: env.GIT_DIFF && env.MATCHED_FILES
+      - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "update Readme" -a
+          git commit -m "bot: Update Readme" -a
 
-      - name: push changes
+      - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
