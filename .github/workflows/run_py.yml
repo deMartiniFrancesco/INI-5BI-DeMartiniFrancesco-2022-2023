@@ -1,6 +1,8 @@
 on:
   push:
-    branches: [ "master" ]
+    branches: [ master ]
+    pull_request:
+      branches: [ master ]
 
 jobs:
   build:
@@ -13,10 +15,19 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.10 #install the python needed
-      - name: execute autoreadme py script # run the run.py to get the latest data
-        run: |
-          .github\scrpts\AutoReadme.py
-        env:
-          key: ${{ secrets.key }} # if run.py requires passwords..etc, set it as secrets
-      - name: export index
-        .... # use crosponding script or actions to help export.
+      # - name: execute autoreadme py script # run the run.py to get the latest data
+      #   run: |
+      # .github\scrpts\AutoReadme.py
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          fail-on-error: false
+          run: |
+            .github\scrpts\AutoReadme.py
+      - name: Print errors
+          if: steps.script.outputs.error == 'true'
+          run: |
+            printenv "SCRIPT_STDOUT"
+            printenv "SCRIPT_STDERR"
+          env:
+            SCRIPT_STDOUT: ${{ steps.script.outputs.stdout }}
+            SCRIPT_STDERR: ${{ steps.script.outputs.stderr }}
