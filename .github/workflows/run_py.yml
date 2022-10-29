@@ -26,7 +26,7 @@ jobs:
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
-        run: python .github/scrpts/AutoReadme.py
+        run: python .github/scripts/AutoReadme.py
 
       - name: Check diff
         uses: technote-space/get-diff-action@v6
