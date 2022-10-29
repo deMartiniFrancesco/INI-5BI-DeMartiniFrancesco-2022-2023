@@ -1,6 +1,6 @@
 package demartini_F_JDBC.bin;
 
-import java.io.File;
+import java.io.*;
 import java.sql.*;
 
 class Jdbc {
@@ -11,17 +11,21 @@ class Jdbc {
 
     public Jdbc() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://172.16.1.99:3306/db99999", "ut99999", "pw99999");
-            if (!notExistTable(connection, "lezioni_deMartini")) {
-                System.out.println("exist");
-                dropTable(connection, "lezioni_deMartini");
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://172.16.1.99:3306/db99999",
+                    "ut99999",
+                    "pw99999"
+            );
+            if (existTable(DOCENTE)) {
+                System.out.println("exist " + DOCENTE);
+                dropTable(DOCENTE);
             }
-            if (notExistTable(connection, LEZIONE)) {
-                createLezioiTable(connection);
+            createDocenteTable();
+            if (existTable(LEZIONE)) {
+                System.out.println("exist " + LEZIONE);
+                dropTable(LEZIONE);
             }
-            if (notExistTable(connection, DOCENTE)) {
-                createDocenteTable(connection);
-            }
+            createLezioiTable();
 
         } catch (SQLException ex) {
             // handle any errors
@@ -33,52 +37,106 @@ class Jdbc {
 
     }
 
-    public static boolean notExistTable(Connection connection, String table) throws SQLException {
-        System.out.println("Jdbc.notExistTable");
+    public boolean existTable(String table) throws SQLException {
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet resultSet = metaData.getTables(null, null, "%", null);
         while (resultSet.next()) {
             if (table.equalsIgnoreCase(resultSet.getString(3))) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 
-    public void dropTable(Connection connection, String table) throws SQLException {
+    public void dropTable(String table) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute("DROP TABLE " + table + ";");
-        System.out.println("Jdbc.dropTable");
     }
 
-    public void createLezioiTable(Connection connection) throws SQLException {
+    public void createLezioiTable() throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeUpdate("CREATE TABLE `" + LEZIONE + "` ("
-                + "  `id` bigint(20) NOT NULL primary key,"
-                + "  `aula` varchar(30) DEFAULT NULL,"
-                + "  `materia` varchar(20) NOT NULL,"
-                + "  `classe` varchar(20),"
-                + "  `giorno` int(20)  NOT NULL,"
-                + "  `ora` int(20)  NOT NULL"
-                + ") ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        statement.execute("CREATE TABLE " + LEZIONE + """
+                (
+                 "id"           bigint NOT NULL AUTO_INCREMENT ,
+                 "classe"       varchar(45) NULL ,
+                 "docente_id"   bigint NOT NULL ,
+                 "docente_id_2" bigint NOT NULL ,
+                 "materia"      varchar(45) NOT NULL ,
+                 "aula"         varchar(45) NULL ,
+                 "giorno"       int NOT NULL ,
+                 "ora"          int NOT NULL ,
+                                
+                PRIMARY KEY ("id"),
+                KEY "FK_docente" ("docente_id"),
+                CONSTRAINT "FK_2" FOREIGN KEY "FK_docente" ("docente_id") REFERENCES "docente_deMartini" ("docente_id"),
+                KEY "FK_docente_2" ("docente_id_2"),
+                CONSTRAINT "FK_1" FOREIGN KEY "FK_docente_2" ("docente_id_2") REFERENCES "docente_deMartini" ("docente_id")
+                );
+                """);
         System.out.println("Jdbc.createLezioiTable");
     }
 
-    public void createDocenteTable(Connection connection) throws SQLException {
+    public void createDocenteTable() throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeUpdate("CREATE TABLE `" + DOCENTE + "` ("
-                + "  `id` bigint(20) NOT NULL primary key,"
-                + "  `nome_cognome` varchar(40) NOT NULL"
-                + ") ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        statement.execute("CREATE TABLE " + DOCENTE + """
+                (
+                   "docente_id"   bigint NOT NULL ,
+                   "nome_cognome" varchar(45) NOT NULL ,
+                  
+                  PRIMARY KEY ("docente_id")
+                  );
+                """);
         System.out.println("Jdbc.createDocenteTable");
+    }
+
+
+    public void loadLezioniCsv(String csvFilePath) throws SQLException, IOException {
+
+        String sql = "INSERT INTO review (course_name, student_name, timestamp, rating, comment) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        BufferedReader lineReader = new BufferedReader(new FileReader(csvFilePath));
+        String lineText = null;
+
+
+        int count = 0;
+
+        lineReader.readLine(); // skip header line
+
+        while ((lineText = lineReader.readLine()) != null) {
+            String[] data = lineText.split(",");
+            int aula = Integer.parseInt(data[0]);
+            String studentName = data[1];
+            String timestamp = data[2];
+            String rating = data[3];
+            String comment = data.length == 5 ? data[4] : "";
+
+//            statement.setString(1, courseName);
+            statement.setString(2, studentName);
+
+            Timestamp sqlTimestamp = Timestamp.valueOf(timestamp);
+            statement.setTimestamp(3, sqlTimestamp);
+
+            float fRating = Float.parseFloat(rating);
+            statement.setFloat(4, fRating);
+
+            statement.setString(5, comment);
+
+            statement.addBatch();
+
+        }
+
+        lineReader.close();
+
+
     }
 
 
 }
 
 class JdbcTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
 
         System.out.println("Start");
 
@@ -99,6 +157,8 @@ class JdbcTest {
         String resursesPath = "/file/";
 
         Jdbc jdbc = new Jdbc();
+
+//        jdbc.loadLezioniCsv(resursesPath + "GPU001.csv");
 
         System.out.println("End");
 
