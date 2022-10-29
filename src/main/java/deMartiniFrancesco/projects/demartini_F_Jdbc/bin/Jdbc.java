@@ -1,4 +1,4 @@
-package demartini_F_JDBC.bin;
+package deMartiniFrancesco.projects.demartini_F_Jdbc.bin;
 
 import java.io.*;
 import java.sql.*;
