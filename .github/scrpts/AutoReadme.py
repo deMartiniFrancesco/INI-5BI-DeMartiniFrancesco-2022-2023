@@ -14,7 +14,7 @@ repository_name = os.path.split(repo_path)[1]
 # CONSTANT
 src_git_directory = "https://github.com/deMartiniFrancesco/" + repository_name + "/tree/master"
 readme_path = "/doc/README.md"
-src_path = repo_path + "/src/main/java/"
+src_path = repo_path + "/src/main/java/deMartiniFrancesco/projects/"
 dir_project_name = "demartini_F_"
 
 # README
@@ -39,7 +39,6 @@ def search_last_update_project(src_directory: str):
         src_directory + directory for directory in os.listdir(src_directory)
         if directory.startswith(dir_project_name)
     ]
-
     return max(all_subdirectories, key=os.path.getmtime)
 
 
