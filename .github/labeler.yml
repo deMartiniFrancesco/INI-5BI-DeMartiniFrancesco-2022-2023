@@ -1,0 +1,15 @@
+documentation:
+  - README.md
+
+
+test:
+  - src/test/java/*
+
+library:
+  - lib/*
+
+workflows:
+  - .github/workflows/*
+
+resources:
+  - src/main/resources/*
