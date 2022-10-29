@@ -14,7 +14,7 @@ repository_name = os.path.split(repo_path)[1]
 # CONSTANT
 src_git_directory = "https://github.com/deMartiniFrancesco/" + repository_name + "/tree/master"
 readme_path = "/doc/README.md"
-src_path = repo_path + "/src/main/java/deMartiniFrancesco/projects/"
+src_path = "/src/main/java/deMartiniFrancesco/projects/"
 dir_project_name = "demartini_F_"
 
 # README
@@ -35,6 +35,7 @@ projects_md = """
 
 
 def search_last_update_project(src_directory: str):
+    src_directory = repo_path + src_directory
     all_subdirectories = [
         src_directory + directory for directory in os.listdir(src_directory)
         if directory.startswith(dir_project_name)
@@ -46,14 +47,12 @@ def last_project_string(dir_updated: str):
     string = "| null | null |\n"
     if dir_updated != "":
         top, end = os.path.split(dir_updated)
-        src = Path(dir_updated).resolve().parts
-        src_name = src[len(src) - 2]
         string = "| " + \
                  "[" + end + "]" + \
-                 "(" + src_git_directory + "/" + src_name + "/" + end + "/bin)" + \
+                 "(" + src_git_directory + src_path + "/" + end + "/bin)" + \
                  " | " + \
                  "[ReadMe]" + \
-                 "(" + src_git_directory + "/" + src_name + "/" + end + readme_path + ")" + \
+                 "(" + src_git_directory + src_path + "/" + end + readme_path + ")" + \
                  " |" + \
                  "\n"
     return string
@@ -61,16 +60,15 @@ def last_project_string(dir_updated: str):
 
 def projects_string(src_directory: str):
     string = ""
-    for directory in os.listdir(src_directory):
-        src_name = Path(src_directory).resolve().name
+    for directory in os.listdir(repo_path + src_directory):
 
         if directory.startswith(dir_project_name):
             string += "| " + \
                       "[" + directory + "]" + \
-                      "(" + src_git_directory + "/" + src_name + "/" + directory + "/bin)" + \
+                      "(" + src_git_directory + src_path + "/" + directory + "/bin)" + \
                       " | " + \
                       "[ReadMe]" + \
-                      "(" + src_git_directory + "/" + src_name + "/" + directory + readme_path + ")" + \
+                      "(" + src_git_directory + src_path + "/" + directory + readme_path + ")" + \
                       " |" + \
                       "\n"
         else:
