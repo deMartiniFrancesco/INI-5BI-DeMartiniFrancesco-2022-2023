@@ -28,7 +28,7 @@ class ETL_ALUNNITest {
                 //----------------------------------------------------------------------
 
                 // COSTANTI
-                String resursesPath = "/file/";
+                String resourcesPath = "/file/";
 
                 System.out.println("Hello, World");
 
