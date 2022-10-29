@@ -3,7 +3,6 @@ __author__ = "Francesco"
 __version__ = "0101 2021/11/04"
 
 import os
-from pathlib import Path
 
 head, tail = os.path.split(__file__)
 os.chdir(head)
