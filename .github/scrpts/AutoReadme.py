@@ -14,7 +14,7 @@ repository_name = os.path.split(repo_path)[1]
 # CONSTANT
 src_git_directory = "https://github.com/deMartiniFrancesco/" + repository_name + "/tree/master"
 readme_path = "/doc/README.md"
-src_path = repo_path + "/src/"
+src_path = repo_path + "/src/main/java/"
 dir_project_name = "demartini_F_"
 
 # README
