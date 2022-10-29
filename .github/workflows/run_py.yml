@@ -1,8 +1,9 @@
 name: Run Py Script
 
 on:
-  push
-
+  push:
+    branches: [ "master" ]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
