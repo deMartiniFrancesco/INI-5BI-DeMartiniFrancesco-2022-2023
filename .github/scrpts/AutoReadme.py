@@ -3,7 +3,6 @@ __author__ = "Francesco"
 __version__ = "0101 2021/11/04"
 
 import os
-import time
 from pathlib import Path
 
 head, tail = os.path.split(__file__)
@@ -12,20 +11,20 @@ os.chdir("../..")
 percorso = os.getcwd()
 
 # CONSTANT
-srcGitDirectory = "https://github.com/deMartiniFrancesco/5BI-DeMartiniFrancesco-2022-2023/tree/master"
-readmePath = "/doc/README.md"
+src_git_directory = "https://github.com/deMartiniFrancesco/5BI-DeMartiniFrancesco-2022-2023/tree/master"
+readme_path = "/doc/README.md"
+src_path = percorso + "/src/"
 dir_project_name = "demartini_F_"
 # README
-intestazioneMD = """# 5BI-DeMartiniFrancesco-2022-2023
+intestazione_md = """# 5BI-DeMartiniFrancesco-2022-2023
 
 """
-lastMD = """## Last
+last_md = """## Last
 
 | PROJECT | README |
 | :--- | ---: |
 """
-
-projectsMD = """
+projects_md = """
 ## Projects
 
 | PROJECT | README |
@@ -34,13 +33,15 @@ projectsMD = """
 
 
 def search_last_update_project(src_directory: str):
-    print(os.listdir(src_directory))
-    all_subdirs = [directory for directory in os.listdir("./src") if directory.startswith(dir_project_name)]
-    print(all_subdirs)
-    latest_subdir = max(all_subdirs, key=os.path.getmtime)
-    print(latest_subdir)
+    all_subdirs = [
+        src_directory + directory for directory in os.listdir(src_directory)
+        if directory.startswith(dir_project_name)
+    ]
 
-def last_project_string(dir_updated):
+    return max(all_subdirs, key=os.path.getmtime)
+
+
+def last_project_string(dir_updated: str):
     string = "| null | null |\n"
     if dir_updated != "":
         top, end = os.path.split(dir_updated)
@@ -48,16 +49,16 @@ def last_project_string(dir_updated):
         src_name = src[len(src) - 2]
         string = "| " + \
                  "[" + end + "]" + \
-                 "(" + srcGitDirectory + "/" + src_name + "/" + end + "/bin)" + \
+                 "(" + src_git_directory + "/" + src_name + "/" + end + "/bin)" + \
                  " | " + \
                  "[ReadMe]" + \
-                 "(" + srcGitDirectory + "/" + src_name + "/" + end + readmePath + ")" + \
+                 "(" + src_git_directory + "/" + src_name + "/" + end + readme_path + ")" + \
                  " |" + \
                  "\n"
     return string
 
 
-def projects_string(src_directory):
+def projects_string(src_directory: str):
     string = ""
     for directory in os.listdir(src_directory):
         src_name = Path(src_directory).resolve().name
@@ -65,10 +66,10 @@ def projects_string(src_directory):
         if directory.startswith(dir_project_name):
             string += "| " + \
                       "[" + directory + "]" + \
-                      "(" + srcGitDirectory + "/" + src_name + "/" + directory + "/bin)" + \
+                      "(" + src_git_directory + "/" + src_name + "/" + directory + "/bin)" + \
                       " | " + \
                       "[ReadMe]" + \
-                      "(" + srcGitDirectory + "/" + src_name + "/" + directory + readmePath + ")" + \
+                      "(" + src_git_directory + "/" + src_name + "/" + directory + readme_path + ")" + \
                       " |" + \
                       "\n"
         else:
@@ -76,15 +77,15 @@ def projects_string(src_directory):
     return string
 
 
-def write_readme(last_string, project_string):
+def write_readme(last_string: str, project_string: str):
     try:
         file_readme = open(percorso + "//README.md", "w")
 
         file_readme.write(
-            intestazioneMD +
-            lastMD +
+            intestazione_md +
+            last_md +
             last_string +
-            projectsMD +
+            projects_md +
             project_string
         )
         file_readme.close()
@@ -94,7 +95,7 @@ def write_readme(last_string, project_string):
     return True
 
 
-def update_md(src_directory, dir_updated):
+def update_md(src_directory: str, dir_updated: str):
     return write_readme(last_project_string(dir_updated), projects_string(src_directory))
 
 
@@ -103,12 +104,7 @@ if __name__ == "__main__":
     if boold:
         print("Start")
 
-    search_last_update_project(percorso + "/src/")
+    update_md(src_path, search_last_update_project(src_path))
 
-    # update_md(
-    #     head + "/src/",
-    #     "",
-    #     "C:/Users/francesco/Documents/School/5BI-DeMartiniFrancesco-2022-2023/src/demartini_F_Jdbc"
-    # )
     if boold:
         print("End")
