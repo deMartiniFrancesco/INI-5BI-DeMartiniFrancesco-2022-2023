@@ -29,10 +29,6 @@ jobs:
           pip install -r .github/requirements.txt
 
       - name: Execute py script
-        env:
-          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
         run: python .github/scripts/AutoReadme.py
 
       - name: Check diff
