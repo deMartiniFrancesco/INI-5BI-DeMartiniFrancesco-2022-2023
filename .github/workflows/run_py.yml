@@ -1,9 +1,16 @@
 name: Run Py Script
 
 on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Generate AutoReadme'
   push:
-    branches: [ "master" ]
-    
+    branches:
+      - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
