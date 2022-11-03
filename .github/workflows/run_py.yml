@@ -1,4 +1,4 @@
-name: Run Py Script
+name: Run Py AutoReadme
 
 on:
   workflow_dispatch:
