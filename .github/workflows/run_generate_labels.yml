@@ -6,7 +6,7 @@ on:
     inputs:
       name:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Generate AutoReadme'
+        description: "Generate AutoReadme"
 
   pull_request_target:
 
@@ -23,7 +23,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' # install the python version needed
+          python-version: "3.10" # install the python version needed
 
       - name: Install python packages
         run: |
@@ -35,32 +35,19 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v14.4
-        with:
-          since_last_remote_commit: 'true'
-          
-      - name: get_modified_files
-        id: diff
-        working-directory: './diff_files'
+        uses: tj-actions/changed-files@v34
+
+      - name: List all changed files
         run: |
-          git config diff.renameLimit 99000
-          git fetch origin $GITHUB_BASE_REF --depth=1
-          touch files.txt
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo $file >> files.txt
+            echo "$file was changed"
           done
-          cat files.txt | split -l 100 -a 8
-          rm files.txt
-          export filename_string=""
-          for i in `ls`; do export filename_string=$filename_string"file!"$i; done
-          echo "::set-output name=filenames::$filename_string"
 
       - name: Check diff
         uses: technote-space/get-diff-action@v6
         with:
           FILES: |
             .github/labeler.yml
-
 
       - name: Commit files
         run: |
