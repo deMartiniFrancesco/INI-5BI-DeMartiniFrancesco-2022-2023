@@ -61,5 +61,5 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: ${GITHUB_REF#refs/heads/}
         if: env.GIT_DIFF && env.MATCHED_FILES
