@@ -8,8 +8,10 @@ on:
         # Friendly description to be shown in the UI instead of 'name'
         description: "Generate labels"
 
-  pull_request_target:
-
+  pull_request:
+    branches:
+      - main
+        
 jobs:
   build:
     runs-on: ubuntu-latest
