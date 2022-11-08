@@ -34,9 +34,9 @@ jobs:
         run: python .github/scripts/labels_generator.py
 
       - name: Checkout repo content
-          uses: actions/checkout@v3 # checkout the repository content to GitHub runner
-          with:
-              path: master
+        uses: actions/checkout@v3 # checkout the repository content to GitHub runner
+        with:
+          path: master
 
       - name: Get changed files
         id: changed-files
