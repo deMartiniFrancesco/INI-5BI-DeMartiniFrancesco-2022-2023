@@ -32,7 +32,6 @@ jobs:
       - name: Execute py script
         run: python .github/scripts/labels_generator.py
 
-      ...
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v5
