@@ -36,15 +36,17 @@ jobs:
       - name: Execute py script
         run: python .github/scripts/labels_generator.py
 
-      - run: |
-          echo "Last successful commit hash: ${{ github.event.pull_request.head.sha }}"
-
       - name: Run changed-files with the commit of the last successful test workflow run on main
         id: changed-files-base-sha-pull-request
         uses: tj-actions/changed-files@v34
         with:
+          files: |
+            .github/labeler.yml
           sha: ${{ github.event.pull_request.head.sha }}
 
+      - run: |
+          echo "${{ steps.changed-files-base-sha-pull-request.outputs.all_modified_files }}"
+        if: steps.changed-files-base-sha-pull-request.outputs.any_changed == 'true'
 
 #      - name: Check diff
 #        uses: technote-space/get-diff-action@v6
