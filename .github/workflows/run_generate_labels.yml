@@ -43,7 +43,7 @@ jobs:
         id: changed-files-base-sha-pull-request
         uses: tj-actions/changed-files@v34
         with:
-          base_sha: ${{ github.event.pull_request.head.sha }}
+          sha: ${{ github.event.pull_request.head.sha }}
 
 
 #      - name: Check diff
