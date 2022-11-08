@@ -36,21 +36,14 @@ jobs:
       - name: Execute py script
         run: python .github/scripts/labels_generator.py
 
-      - uses: nrwl/last-successful-commit-action@v1
-        id: last_successful_commit_pull_request
-        with:
-          branch: ${{ steps.branch-name.outputs.head_ref_branch }} # Get the last successful commit on master or main branch
-          workflow_id: 'run_generate_labels.yml'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          
       - run: |
-          echo "Last successful commit hash: ${{ steps.last_successful_commit_pull_request.outputs.commit_hash }}"
+          echo "Last successful commit hash: ${{ github.event.pull_request.head.sha }}"
 
       - name: Run changed-files with the commit of the last successful test workflow run on main
         id: changed-files-base-sha-pull-request
         uses: tj-actions/changed-files@v34
         with:
-          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.commit_hash }}
+          base_sha: ${{ github.event.pull_request.head.sha }}
 
 
 #      - name: Check diff
