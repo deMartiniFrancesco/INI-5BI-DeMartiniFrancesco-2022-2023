@@ -11,13 +11,13 @@ on:
   pull_request:
     branches:
       - main
-        
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Get branch names.
-        id: branch-names
+        id: branch-name
         uses: tj-actions/branch-names@v6
 
       - name: Checkout repo content
