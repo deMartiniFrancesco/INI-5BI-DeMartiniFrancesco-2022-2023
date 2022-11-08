@@ -17,7 +17,8 @@ jobs:
       - name: Checkout repo content
         uses: actions/checkout@v3 # checkout the repository content to GitHub runner
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+#          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.ref }}
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -32,8 +33,33 @@ jobs:
       - name: Execute py script
         run: python .github/scripts/labels_generator.py
 
-      - name: Check diff
-        uses: technote-space/get-diff-action@v6
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v14.4
+        with:
+          since_last_remote_commit: 'true'
+
+      - name: get_modified_files
+        id: diff
+        working-directory: './diff_files'
+        run: |
+          git config diff.renameLimit 99000
+          git fetch origin $GITHUB_BASE_REF --depth=1
+          touch files.txt
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo $file >> files.txt
+          done
+          cat files.txt | split -l 100 -a 8
+          rm files.txt
+          export filename_string=""
+          for i in `ls`; do export filename_string=$filename_string"file!"$i; done
+          echo "::set-output name=filenames::$filename_string"
+
+#      - name: Check diff
+#        uses: technote-space/get-diff-action@v6
+#        with:
+#          ref: ${{ github.event.pull_request.head.ref }}
+
 #        with:
 #          FILES: |
 #            .github/labeler.yml
