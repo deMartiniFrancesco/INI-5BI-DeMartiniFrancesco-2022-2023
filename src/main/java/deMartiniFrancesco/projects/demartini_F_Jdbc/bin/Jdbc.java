@@ -33,8 +33,6 @@ class Jdbc {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-
-
     }
 
     public boolean existTable(String table) throws SQLException {
@@ -47,7 +45,6 @@ class Jdbc {
         }
         return false;
     }
-
 
     public void dropTable(String table) throws SQLException {
         Statement statement = connection.createStatement();
@@ -98,8 +95,6 @@ class Jdbc {
 
         BufferedReader lineReader = new BufferedReader(new FileReader(csvFilePath));
         String lineText = null;
-
-
         int count = 0;
 
         lineReader.readLine(); // skip header line
@@ -124,15 +119,10 @@ class Jdbc {
             statement.setString(5, comment);
 
             statement.addBatch();
-
         }
 
         lineReader.close();
-
-
     }
-
-
 }
 
 class JdbcTest {
