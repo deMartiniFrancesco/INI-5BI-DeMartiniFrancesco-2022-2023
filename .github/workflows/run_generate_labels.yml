@@ -17,8 +17,7 @@ jobs:
       - name: Checkout repo content
         uses: actions/checkout@v3 # checkout the repository content to GitHub runner
         with:
-#          ref: ${{ github.event.pull_request.head.ref }}
-          ref: ${{ github.ref }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Setup python
         uses: actions/setup-python@v4
