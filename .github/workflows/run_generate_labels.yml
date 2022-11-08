@@ -6,7 +6,7 @@ on:
     inputs:
       name:
         # Friendly description to be shown in the UI instead of 'name'
-        description: "Generate AutoReadme"
+        description: "Generate labels"
 
   pull_request_target:
 
@@ -16,9 +16,9 @@ jobs:
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v3 # checkout the repository content to GitHub runner
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+#        with:
+#          repository: ${{ github.event.pull_request.head.repo.full_name }}
+#          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -33,28 +33,23 @@ jobs:
       - name: Execute py script
         run: python .github/scripts/labels_generator.py
 
-      - name: Checkout repo content
-        uses: actions/checkout@v3 # checkout the repository content to GitHub runner
-        with:
-          path: master
-
       - name: Check diff
         uses: technote-space/get-diff-action@v6
-        with:
-          FILES: |
-            .github/labeler.yml
+#        with:
+#          FILES: |
+#            .github/labeler.yml
 
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "bot: Update Readme" -a
-        if: env.GIT_DIFF && env.MATCHED_FILES
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${GITHUB_REF#refs/heads/}
-        if: env.GIT_DIFF && env.MATCHED_FILES
+#      - name: Commit files
+#        run: |
+#          git config --local user.email "action@github.com"
+#          git config --local user.name "GitHub Action"
+#          git add -A
+#          git commit -m "bot: Update Readme" -a
+#        if: env.GIT_DIFF && env.MATCHED_FILES
+#
+#      - name: Push changes
+#        uses: ad-m/github-push-action@v0.6.0
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${GITHUB_REF#refs/heads/}
+#        if: env.GIT_DIFF && env.MATCHED_FILES
