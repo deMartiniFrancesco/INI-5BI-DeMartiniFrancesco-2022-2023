@@ -46,7 +46,6 @@ jobs:
 
       - run: |
           echo "${{ steps.changed-files-base-sha-pull-request.outputs.all_modified_files }}"
-        if: steps.changed-files-base-sha-pull-request.outputs.any_changed == 'true'
 
 #      - name: Check diff
 #        uses: technote-space/get-diff-action@v6
