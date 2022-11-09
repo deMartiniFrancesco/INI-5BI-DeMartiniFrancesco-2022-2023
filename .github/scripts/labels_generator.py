@@ -83,12 +83,8 @@ if __name__ == '__main__':
     if boold:
         print("Start")
 
-    # list_directories = list_directory()
-    # print("READ: ", read_labels_test())
-    # print("WRITE: ", write_labels(labels_string(list_directories)))
-    # print("READ: ", read_labels_test())
-
-    print(os.path.exists(".github/scripts/test.txt"))
+    list_directories = list_directory()
+    print("LABELS: ", labels_string(list_directories))
 
     if boold:
         print("End")
