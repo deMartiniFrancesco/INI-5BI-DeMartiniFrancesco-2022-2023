@@ -9,8 +9,6 @@ os.chdir(head)
 os.chdir("../..")
 os.chdir(os.getcwd())
 
-label_path = ".github/labeler.yml"
-dir_project_name = "demartini_F_"
 src_path = "src/main/java/deMartiniFrancesco/projects"
 
 
@@ -25,9 +23,10 @@ boold = True
 if __name__ == '__main__':
     if boold:
         print("Start")
-    list_directory = list_directory()
-    # print(f'::set-output name=list_directory::{list_directory}')
-    print(f'list_directory={list_directory} >> $GITHUB_OUTPUT')
+
+    list_dir = os.environ.get("INPUT_LIST")
+
+    print(list_dir)
 
     if boold:
         print("End")

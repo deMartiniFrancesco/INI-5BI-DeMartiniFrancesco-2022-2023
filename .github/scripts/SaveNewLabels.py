@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = "Francesco"
-__version__ = "0101 2022/10/29"
+__version__ = "0101 2022/11/09"
 
 import os
 
@@ -31,6 +31,7 @@ resources:
 
 """
 
+
 def write_labels(label_strings: str):
     try:
         file_labels = open(label_path, "w")
@@ -53,3 +54,13 @@ def labels_string(list_directory_name: list):
     for directory in list_directory_name:
         string += directory.replace(dir_project_name, "") + ":\n  - " + src_path + "/" + directory + "/*\n\n"
     return string
+
+
+boold = True
+if __name__ == '__main__':
+    if boold:
+        print("Start")
+
+
+    if boold:
+        print("End")
