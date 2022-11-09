@@ -23,10 +23,8 @@ boold = True
 if __name__ == '__main__':
     if boold:
         print("Start")
-
-    list_dir = os.environ.get("INPUT_LIST")
-
-    print(list_dir)
+    list_directory = list_directory()
+    print(f'::set-output name=list_directory::{list_directory}')
 
     if boold:
         print("End")

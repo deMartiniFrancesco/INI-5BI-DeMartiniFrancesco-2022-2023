@@ -61,6 +61,9 @@ if __name__ == '__main__':
     if boold:
         print("Start")
 
+    list_dir = os.environ.get("INPUT_LIST")
+
+    print(list_dir)
 
     if boold:
         print("End")
