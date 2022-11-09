@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      output: ${{ steps.generate-labels.outputs.list_directory }}
+      list_directory: ${{ steps.generate_labels.outputs.list_directory }}
 
 
     steps:
@@ -39,7 +39,7 @@ jobs:
           pip install -r .github/requirements.txt
 
       - name: Execute py script
-        id: generate-labels
+        id: generate_labels
         run: python .github/scripts/GenerateLabels.py
 
 
@@ -50,9 +50,7 @@ jobs:
     needs: generate_labels
 
     steps:
-      - run: echo ${{needs.generate-labels.outputs.output}}
-          
-
+      - run: echo ${{needs.generate_labels.outputs.list_directory}}
 
 
 
