@@ -13,6 +13,11 @@ on:
 jobs:
   generate_labels:
     runs-on: ubuntu-latest
+
+    outputs:
+      output: ${{ steps.generate-labels.outputs.list_directory }}
+
+
     steps:
       - name: Get branch names
         id: branch-name
@@ -34,34 +39,40 @@ jobs:
           pip install -r .github/requirements.txt
 
       - name: Execute py script
+        id: generate-labels
         run: python .github/scripts/GenerateLabels.py
 
-      - name: Run changed-files with the commit of the last successful test workflow run on main
-        id: changed-files-base-sha-pull-request
-        uses: tj-actions/changed-files@v34
-        with:
-          files: |
-            .github/labeler.yml
-          sha: ${{ github.event.pull_request.head.sha }}
 
-      - run: |
-          echo "${{ steps.changed-files-base-sha-pull-request.outputs.all_modified_files }}"
-          
 
   save_new_labels:
+    runs-on: ubuntu-latest
+
+    needs: generate_labels
+
+    steps:
+      - run: echo ${{needs.generate-labels.outputs.output}}
+          
 
 
 
 
+#      - name: Run changed-files with the commit of the last successful test workflow run on main
+#        id: changed-files-base-sha-pull-request
+#        uses: tj-actions/changed-files@v34
+#        with:
+#          files: |
+#            .github/labeler.yml
+#          sha: ${{ github.event.pull_request.head.sha }}
+#
 #      - name: Check diff
 #        uses: technote-space/get-diff-action@v6
 #        with:
 #          ref: ${{ github.event.pull_request.head.ref }}
-
+#
 #        with:
 #          FILES: |
 #            .github/labeler.yml
-
+#
 #      - name: Commit files
 #        run: |
 #          git config --local user.email "action@github.com"
