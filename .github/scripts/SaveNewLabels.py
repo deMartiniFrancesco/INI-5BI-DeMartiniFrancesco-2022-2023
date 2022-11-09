@@ -61,11 +61,9 @@ if __name__ == '__main__':
     if boold:
         print("Start")
 
-    list_dir = list(os.environ.get("INPUT_LIST"))
+    list_dir = os.environ.get("INPUT_LIST").split("?")
 
     print(list_dir, type(list_dir))
-
-    write_labels(labels_string(list_dir))
 
     if boold:
         print("End")

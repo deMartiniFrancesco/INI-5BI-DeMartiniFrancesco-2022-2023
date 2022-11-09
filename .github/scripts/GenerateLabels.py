@@ -23,7 +23,8 @@ boold = True
 if __name__ == '__main__':
     if boold:
         print("Start")
-    list_directory = list_directory()
+    list_directory = '?'.join([str(elem) for elem in list_directory()])
+
     print(f'::set-output name=list_directory::{list_directory}')
 
     if boold:
