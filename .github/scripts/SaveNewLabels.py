@@ -65,5 +65,7 @@ if __name__ == '__main__':
 
     print(list_dir, type(list_dir))
 
+    write_labels(labels_string(list_dir))
+
     if boold:
         print("End")

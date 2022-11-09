@@ -37,7 +37,7 @@ jobs:
       - name: Execute py script
         id: generate_labels
         run: python .github/scripts/GenerateLabels.py
-
+        shell: bash
 
       - run: echo ${{ steps.generate_labels.outputs.list_directory }}
 
@@ -53,8 +53,6 @@ jobs:
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v3
-        with:
-          ref: master
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -75,35 +73,23 @@ jobs:
         run: python .github/scripts/SaveNewLabels.py
         shell: bash
 
+      - name: Check diff
+        uses: technote-space/get-diff-action@v6
+        with:
+          FILES: |
+            .github/labeler.yml
 
-#      - name: Run changed-files with the commit of the last successful test workflow run on main
-#        id: changed-files-base-sha-pull-request
-#        uses: tj-actions/changed-files@v34
-#        with:
-#          files: |
-#            .github/labeler.yml
-#          sha: ${{ github.event.pull_request.head.sha }}
-#
-#      - name: Check diff
-#        uses: technote-space/get-diff-action@v6
-#        with:
-#          ref: ${{ github.event.pull_request.head.ref }}
-#
-#        with:
-#          FILES: |
-#            .github/labeler.yml
-#
-#      - name: Commit files
-#        run: |
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#          git add -A
-#          git commit -m "bot: Update Readme" -a
-#        if: env.GIT_DIFF && env.MATCHED_FILES
-#
-#      - name: Push changes
-#        uses: ad-m/github-push-action@v0.6.0
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: ${GITHUB_REF#refs/heads/}
-#        if: env.GIT_DIFF && env.MATCHED_FILES
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Bot: Update labeler.yml" -a
+        if: env.GIT_DIFF && env.MATCHED_FILES
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+        if: env.GIT_DIFF && env.MATCHED_FILES

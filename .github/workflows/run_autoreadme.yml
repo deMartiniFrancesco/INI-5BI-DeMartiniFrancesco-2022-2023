@@ -10,27 +10,14 @@ on:
   push:
     branches:
       - master
-  pull_request_target:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-
-
+      
       - name: Checkout repo content
         uses: actions/checkout@v3 # checkout the repository content to GitHub runner
-        if: github.event_name != 'pull_request'
-
-      - name: Checkout repo content PR
-        uses: actions/checkout@v3 # checkout the repository content to GitHub runner
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-        if: github.event_name == 'pull_request'
-
-
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -40,9 +27,11 @@ jobs:
       - name: Install python packages
         run: |
           python -m pip install --upgrade pip
+        shell: bash
 
       - name: Execute py script
         run: python .github/scripts/AutoReadme.py
+        shell: bash
 
       - name: Check diff
         uses: technote-space/get-diff-action@v6
@@ -50,18 +39,17 @@ jobs:
           FILES: |
             README.md
 
-
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "bot: Update Readme" -a
+          git commit -m "Bot: Update Readme.md" -a
         if: env.GIT_DIFF && env.MATCHED_FILES
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          branch: ${{ github.ref }}
         if: env.GIT_DIFF && env.MATCHED_FILES
