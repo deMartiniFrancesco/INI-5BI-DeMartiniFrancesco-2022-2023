@@ -26,8 +26,8 @@ if __name__ == '__main__':
     if boold:
         print("Start")
     list_directory = list_directory()
-    print(f'"list_directory={list_directory}" >> $GITHUB_OUTPUT')
-    print("LABELS: ", list_directory)
+    print(f'::set-output name=list_directory::{list_directory}')
+    print(f'list_directory={list_directory} >> $GITHUB_OUTPUT')
 
     if boold:
         print("End")
