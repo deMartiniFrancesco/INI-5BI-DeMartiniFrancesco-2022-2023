@@ -14,10 +14,6 @@ jobs:
   generate_labels:
     runs-on: ubuntu-latest
 
-    outputs:
-      list_directory: ${{ steps.generate_labels.outputs.list_directory }}
-
-
     steps:
       - name: Get branch names
         id: branch-name
@@ -43,7 +39,10 @@ jobs:
         run: python .github/scripts/GenerateLabels.py
 
 
-      - run: echo $GITHUB_OUTPUT
+      - run: echo ${{ steps.generate_labels.outputs.list_directory }}
+
+    outputs:
+      list_directory: ${{ steps.generate_labels.outputs.list_directory }}
 
 
   save_new_labels:
