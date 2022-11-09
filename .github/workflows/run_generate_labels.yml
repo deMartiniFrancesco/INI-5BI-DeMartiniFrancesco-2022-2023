@@ -11,7 +11,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  generate_labels:
     runs-on: ubuntu-latest
     steps:
       - name: Get branch names
@@ -34,7 +34,7 @@ jobs:
           pip install -r .github/requirements.txt
 
       - name: Execute py script
-        run: python .github/scripts/labels_generator.py
+        run: python .github/scripts/GenerateLabels.py
 
       - name: Run changed-files with the commit of the last successful test workflow run on main
         id: changed-files-base-sha-pull-request
@@ -46,6 +46,12 @@ jobs:
 
       - run: |
           echo "${{ steps.changed-files-base-sha-pull-request.outputs.all_modified_files }}"
+          
+
+  save_new_labels:
+
+
+
 
 #      - name: Check diff
 #        uses: technote-space/get-diff-action@v6
