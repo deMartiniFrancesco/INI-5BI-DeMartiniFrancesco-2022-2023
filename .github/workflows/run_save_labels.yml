@@ -32,21 +32,21 @@ jobs:
 
       - name: Check diff
         uses: technote-space/get-diff-action@v6
-        with:
-          FILES: |
-            .github/labeler.yml
+      #   with:
+      #     FILES: |
+      #       .github/labeler.yml
 
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "Bot: Update labeler.yml" -a
-        if: env.GIT_DIFF && env.MATCHED_FILES
+      # - name: Commit files
+      #   run: |
+      #     git config --local user.email "action@github.com"
+      #     git config --local user.name "GitHub Action"
+      #     git add -A
+      #     git commit -m "Bot: Update labeler.yml" -a
+      #   if: env.GIT_DIFF && env.MATCHED_FILES
 
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-        if: env.GIT_DIFF && env.MATCHED_FILES
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@v0.6.0
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: ${{ github.ref }}
+      #   if: env.GIT_DIFF && env.MATCHED_FILES
