@@ -2,7 +2,7 @@ name: Run Py SaveNewLabels
 
 on:
   repository_dispatch:
-  types: [save_labels]
+    types: [save_labels]
 
 jobs:
   save_new_labels:
