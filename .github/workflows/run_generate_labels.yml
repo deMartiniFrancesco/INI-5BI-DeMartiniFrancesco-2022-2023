@@ -1,4 +1,4 @@
-name: Run Py label_generator
+name: Run Py GenerateLabels
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
 jobs:
   generate_labels:
     runs-on: ubuntu-latest
-    environment: production
+    environment: labels
     steps:
       - name: Get branch names
         id: branch-name
@@ -41,13 +41,8 @@ jobs:
 
       - run: echo ${{ steps.generate_labels.outputs.list_directory }}
 
-    outputs:
-      list_directory: ${{ steps.generate_labels.outputs.list_directory }}
-
 
   call-workflow-passing-data:
       uses: octo-org/example-repo/.github/workflows/reusable-workflow.yml@main
       with:
-        config-path: .github/labeler.yml
-      secrets:
-        envPAT: ${{ secrets.envPAT }}
+        dir_list: {{ steps.generate_labels.outputs.list_directory }}

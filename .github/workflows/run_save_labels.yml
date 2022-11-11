@@ -1,20 +1,18 @@
-name: Run Py label_generator
+name: Run Py SaveNewLabels
 
 on:
   workflow_call:
     inputs:
-      config-path:
+      dir_list:
         required: true
         type: string
-    secrets:
-      envPAT:
-        required: true
+
 
 jobs:
 
   save_new_labels:
     runs-on: ubuntu-latest  
-    environment: production
+    environment: labels
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v3
@@ -33,7 +31,7 @@ jobs:
 
       - name: Pass Inputs to Shell
         run: |
-          echo "INPUT_LIST=${{needs.generate_labels.outputs.list_directory}}" >> $GITHUB_ENV
+          echo "INPUT_LIST=$${{ inputs.dir_list }}" >> $GITHUB_ENV
 
       - name: Execute py script
         id: save_labels
