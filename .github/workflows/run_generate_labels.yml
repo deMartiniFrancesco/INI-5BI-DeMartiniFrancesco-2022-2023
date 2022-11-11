@@ -41,8 +41,13 @@ jobs:
 
       - run: echo ${{ steps.generate_labels.outputs.list_directory }}
 
+    outputs:
+      list_directory: ${{ steps.generate_labels.outputs.list_directory }}
 
-  call-workflow-passing-data:
+  call_workflow_save_labels:
+      runs-on: ubuntu-latest
+      environment: labels
+      needs: generate_labels
       uses: deMartiniFrancesco/INI-5BI-DeMartiniFrancesco-2022-2023/.github/workflows/run_save_labels.yml@master
       with:
-        dir_list: ${{ steps.generate_labels.outputs.list_directory }}
+        dir_list: ${{needs.generate_labels.outputs.list_directory}}
