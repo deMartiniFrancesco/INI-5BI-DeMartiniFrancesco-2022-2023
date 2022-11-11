@@ -1,12 +1,10 @@
 name: Run Py SaveNewLabels
 
 on:
-    repository_dispatch:
-    types: [save_labels]
-
+  repository_dispatch:
+  types: [save_labels]
 
 jobs:
-
   save_new_labels:
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +52,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
         if: env.GIT_DIFF && env.MATCHED_FILES
-  
-
-
-  
