@@ -13,7 +13,6 @@ on:
 jobs:
   generate_labels:
     runs-on: ubuntu-latest
-    environment: labels
     steps:
       - name: Get branch names
         id: branch-name
@@ -44,9 +43,12 @@ jobs:
     outputs:
       list_directory: ${{ steps.generate_labels.outputs.list_directory }}
 
+    
   call_workflow_save_labels:
     needs: generate_labels
-    uses: ./.github/workflows/run_save_labels.yml
+    uses: peter-evans/repository-dispatch@v1
     with:
-      dir_list: ${{needs.generate_labels.outputs.list_directory}}
-    secrets: inherit
+      token: ${{ secrets.PAT }}
+      event-type: save_labels
+      client-payload: '{"dir_list": "${{needs.generate_labels.outputs.list_directory}}"}'
+
