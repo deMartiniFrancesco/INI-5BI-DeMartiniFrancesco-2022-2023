@@ -45,9 +45,8 @@ jobs:
       list_directory: ${{ steps.generate_labels.outputs.list_directory }}
 
   call_workflow_save_labels:
-    runs-on: ubuntu-latest
-    environment: labels
     needs: generate_labels
     uses: ./.github/workflows/run_save_labels.yml
     with:
       dir_list: ${{needs.generate_labels.outputs.list_directory}}
+    secrets: inherit
