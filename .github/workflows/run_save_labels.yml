@@ -25,7 +25,7 @@ jobs:
 
       - name: Pass Inputs to Shell
         run: |
-          echo "INPUT_LIST=$${{ github.event.client_payload.dir_list }}" >> $GITHUB_ENV
+          echo "INPUT_LIST=${{ github.event.client_payload.dir_list }}" >> $GITHUB_ENV
 
       - name: Execute py script
         id: save_labels
