@@ -45,4 +45,4 @@ jobs:
   call-workflow-passing-data:
       uses: deMartiniFrancesco/INI-5BI-DeMartiniFrancesco-2022-2023/.github/workflows/run_save_labels.yml@master
       with:
-        dir_list: {{ steps.generate_labels.outputs.list_directory }}
+        dir_list: ${{ steps.generate_labels.outputs.list_directory }}
