@@ -48,7 +48,7 @@ jobs:
     needs: generate_labels
     steps:
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2.1.0
+        uses: peter-evans/repository-dispatch@v2.1.1
         with:
           event-type: save_labels
           client-payload: '{"dir_list": "${{needs.generate_labels.outputs.list_directory}}"}'
