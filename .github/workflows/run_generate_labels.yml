@@ -2,12 +2,6 @@ name: Run Py GenerateLabels
 
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: "Generate labels"
-
   pull_request:
 
 jobs:
@@ -48,7 +42,7 @@ jobs:
     needs: generate_labels
     steps:
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2.1.0
+        uses: peter-evans/repository-dispatch@v2.1.1
         with:
           event-type: save_labels
           client-payload: '{"dir_list": "${{needs.generate_labels.outputs.list_directory}}"}'

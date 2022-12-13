@@ -45,7 +45,7 @@ def write_labels(label_strings: str):
     except IOError as error:
         print(error)
         return False
-    return True
+    return label_strings
 
 
 def labels_string(list_directory_name: list):

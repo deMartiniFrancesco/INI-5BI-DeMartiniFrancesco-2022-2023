@@ -8,14 +8,14 @@ head, tail = os.path.split(__file__)
 os.chdir(head)
 os.chdir("../..")
 os.chdir(os.getcwd())
-
+dir_project_name = "demartini_F_"
 src_path = "src/main/java/deMartiniFrancesco/projects"
 
 
 def list_directory():
     return [
         directory for directory in os.listdir(src_path)
-        if os.path.isdir(src_path + "/" + directory)
+        if os.path.isdir(src_path + "/" + directory) and directory.startswith(dir_project_name)
     ]
 
 
