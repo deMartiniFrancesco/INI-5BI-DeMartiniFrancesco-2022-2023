@@ -1,0 +1,1 @@
+SELECT * FROM brano WHERE id NOT IN (SELECT idbrano FROM voto)
