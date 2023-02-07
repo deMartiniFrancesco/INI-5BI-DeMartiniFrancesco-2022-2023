@@ -5,10 +5,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 class ETL_ALUNNI {
 
@@ -81,24 +85,24 @@ class ETL_ALUNNI {
 
     public void loadLezioniCsv(String csvFilePath) throws SQLException, IOException, ParseException {
 
-        String sql =  "INSERT INTO " + tableName + """
-        (
-            matricola,
-            cognome,
-            nome,
-            residenza,
-            class_next,
-            cittadinanza_estesa,
-            voto_medio,
-            voto_condotta,
-            data_nascita,
-            cap,
-            voto_italiano,
-            voto_matematica,
-            voto_inglese
-            
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+        String sql = "INSERT INTO " + tableName + """
+                (
+                    matricola,
+                    cognome,
+                    nome,
+                    residenza,
+                    class_next,
+                    cittadinanza_estesa,
+                    voto_medio,
+                    voto_condotta,
+                    data_nascita,
+                    cap,
+                    voto_italiano,
+                    voto_matematica,
+                    voto_inglese
+                    
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
         PreparedStatement statement = connection.prepareStatement(sql);
 
         BufferedReader lineReader = new BufferedReader(new FileReader(csvFilePath));
@@ -109,6 +113,14 @@ class ETL_ALUNNI {
 
         while ((lineText = lineReader.readLine()) != null) {
             String[] data = Arrays.stream(lineText.split(";")).map(String::trim).toArray(String[]::new);
+            if(data.length < 13) {
+                String[] temp = new String[13];
+                System.arraycopy(data, 0, temp, 0, data.length);
+                data = temp;
+            }
+            for(int i =0; i < data.length; i++) {
+                if(data[i] == null) data[i] = "";
+            }
             System.out.println("data = " + Arrays.toString(data));
 
             int matricola = Integer.parseInt(data[0]);
@@ -143,6 +155,17 @@ class ETL_ALUNNI {
         }
 
         lineReader.close();
+    }
+
+    static <T> T[] concatWithCollection(T[] array1, T[] array2) {
+        List<T> resultList = new ArrayList<>(array1.length + array2.length);
+        Collections.addAll(resultList, array1);
+        Collections.addAll(resultList, array2);
+
+        @SuppressWarnings("unchecked")
+        //the type cast is safe as the array1 has the type T[]
+        T[] resultArray = (T[]) Array.newInstance(array1.getClass().getComponentType(), 0);
+        return resultList.toArray(resultArray);
     }
 }
 
