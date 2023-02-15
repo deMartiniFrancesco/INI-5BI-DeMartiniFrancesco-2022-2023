@@ -4,30 +4,31 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 class ETL_ALUNNI {
 
-    static String ALUNNO = "Alunno";
-
+    static final String tableName = "etl_alunni";
     private Connection connection;
-
 
     public ETL_ALUNNI() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/alunni", "root", "");
-            if (existTable(ALUNNO)) {
-                System.out.println("exist " + ALUNNO);
-                dropTable(ALUNNO);
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://172.16.1.99:3306/db99999",
+                    "ut99999",
+                    "pw99999"
+            );
+            if (existTable(tableName)) {
+                dropTable(tableName);
             }
-            createTableAlunno();
-
+            createTable(tableName);
 
         } catch (SQLException ex) {
             // handle any errors
@@ -47,13 +48,10 @@ class ETL_ALUNNI {
         }
         return false;
     }
-
-
     public void dropTable(String table) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute("DROP TABLE " + table + ";");
     }
-
     public void createTableAlunno() throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute(String.format("""
@@ -176,23 +174,29 @@ class ETL_ALUNNITest {
 
         //              CALCOLO PATH RELATIVO UNIVERSALE
         //----------------------------------------------------------------------
-        String tempPath = new File(String.valueOf(ETL_ALUNNI.class.getPackage()).replace("package ", "")
-                .replace(".", "/")).getParent();
-        File userPath = new File(System.getProperty("user.dir"));
-        String projectPath = userPath.getName().equals(tempPath) ?
-                userPath.getPath() :
-                new File(userPath.getPath() + "/src/main/java").exists() ?
-                        userPath.getPath() + "/src/main/java/" + tempPath :
-                        userPath.getPath() + tempPath;
+        String tempPath = new File(
+                String.valueOf(ETL_ALUNNI.class.getPackage()).replace("package ", "").replace(".", "/")
+        ).getParent();
+        String srcPath = "/src/main/java/";
+        File uesrPath = new File(System.getProperty("user.dir"));
+        String projectPath = uesrPath.getName().equals(tempPath) ?
+                uesrPath.getPath() :
+                new File(uesrPath.getPath() + srcPath).exists() ?
+                        uesrPath.getPath() + srcPath + tempPath :
+                        uesrPath.getPath() + tempPath;
         //----------------------------------------------------------------------
 
         // COSTANTI
-        String resourcesPath = "/file/";
+        String resourcesPath = projectPath + "/file/";
 
-        ETL_ALUNNI alunni = new ETL_ALUNNI();
-        alunni.loadCsv(projectPath + resourcesPath + "export_alunni.csv");
+        ETL_ALUNNI etlAlunni = new ETL_ALUNNI();
+
+        try {
+            etlAlunni.loadLezioniCsv(resourcesPath + "export_alunni.csv");
+        } catch (SQLException | IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("End");
-
     }
 }

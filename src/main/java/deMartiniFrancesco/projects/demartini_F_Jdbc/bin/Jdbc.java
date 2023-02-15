@@ -2,6 +2,7 @@ package deMartiniFrancesco.projects.demartini_F_Jdbc.bin;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Arrays;
 
 class Jdbc {
     static String LEZIONE = "lezione_deMartini";
@@ -100,23 +101,25 @@ class Jdbc {
         lineReader.readLine(); // skip header line
 
         while ((lineText = lineReader.readLine()) != null) {
-            String[] data = lineText.split(",");
-            int aula = Integer.parseInt(data[0]);
-            String studentName = data[1];
-            String timestamp = data[2];
-            String rating = data[3];
-            String comment = data.length == 5 ? data[4] : "";
+            String[] data = Arrays.stream(lineText.split(";")).map(String::trim).toArray(String[]::new);
+            String deocente1 = data[0];
+            String classe = data[1];
+            String deocente2 = data[2];
+            String materia = data[3];
+            String aula = data[4];
+            int giorno = Integer.parseInt(data[5]);
+            int ora= Integer.parseInt(data[6]);
 
 //            statement.setString(1, courseName);
-            statement.setString(2, studentName);
-
-            Timestamp sqlTimestamp = Timestamp.valueOf(timestamp);
-            statement.setTimestamp(3, sqlTimestamp);
-
-            float fRating = Float.parseFloat(rating);
-            statement.setFloat(4, fRating);
-
-            statement.setString(5, comment);
+//            statement.setString(2, studentName);
+//
+//            Timestamp sqlTimestamp = Timestamp.valueOf(timestamp);
+//            statement.setTimestamp(3, sqlTimestamp);
+//
+//            float fRating = Float.parseFloat(rating);
+//            statement.setFloat(4, fRating);
+//
+//            statement.setString(5, comment);
 
             statement.addBatch();
         }
@@ -126,7 +129,7 @@ class Jdbc {
 }
 
 class JdbcTest {
-    public static void main(String[] args) throws SQLException, FileNotFoundException {
+    public static void main(String[] args) throws SQLException {
 
         System.out.println("Start");
 
@@ -135,20 +138,25 @@ class JdbcTest {
         String tempPath = new File(
                 String.valueOf(Jdbc.class.getPackage()).replace("package ", "").replace(".", "/")
         ).getParent();
+        String srcPath = "/src/main/java/";
         File uesrPath = new File(System.getProperty("user.dir"));
         String projectPath = uesrPath.getName().equals(tempPath) ?
                 uesrPath.getPath() :
-                new File(uesrPath.getPath() + "/src").exists() ?
-                        uesrPath.getPath() + "/src/" + tempPath :
+                new File(uesrPath.getPath() + srcPath).exists() ?
+                        uesrPath.getPath() + srcPath + tempPath :
                         uesrPath.getPath() + tempPath;
         //----------------------------------------------------------------------
 
         // COSTANTI
-        String resursesPath = "/file/";
+        String resourcesPath = projectPath + "/file/";
 
         Jdbc jdbc = new Jdbc();
 
-//        jdbc.loadLezioniCsv(resursesPath + "GPU001.csv");
+        try {
+            jdbc.loadLezioniCsv(resourcesPath + "GPU001.csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("End");
 
