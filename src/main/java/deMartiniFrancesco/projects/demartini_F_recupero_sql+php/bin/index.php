@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Canzoni - Index</title>
+	<title>Database Musicale</title>
 </head>
 <body>
-	<h1>Canzoni</h1>
+	<h1>Benvenuti nel nostro Database Musicale!</h1>
 	<ul>
 		<li><a href="view_songs.php">Visualizza tutte le canzoni</a></li>
 		<li><a href="view_artists.php">Visualizza tutti gli artisti</a></li>
