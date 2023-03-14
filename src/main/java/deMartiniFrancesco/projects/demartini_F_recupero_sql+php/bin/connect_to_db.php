@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$username = "18606";
-$password = "password";
-$db_name = "18606";
+$username = "admin";
+$password = "passwordsicura";
+$db_name = "canzoni";
 $con;
 try {
     $con = new PDO("mysql:host={$host};dbname={$db_name}", $username, $password, array(PDO::ATTR_PERSISTENT => true));
