@@ -1,7 +1,7 @@
 <?php
 require_once("connect_to_db.php");
 
-$sql = "SELECT DISTINCT artista FROM canzoni ORDER BY artista";
+$sql = "SELECT * FROM artista";
 $result = queryToDb($sql);
 ?>
 
@@ -16,7 +16,7 @@ $result = queryToDb($sql);
     <h1>Elenco di tutti gli artisti</h1>
     <ul>
         <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)) : ?>
-            <li><?php echo $row['artista']; ?></li>
+            <li><?php echo $row['descr']; ?></li>
         <?php endwhile; ?>
     </ul>
 </body>
