@@ -13,7 +13,8 @@ repo_path = os.getcwd()
 repository_name = os.path.split(repo_path)[1]
 
 # CONSTANT
-src_git_directory = "https://github.com/deMartiniFrancesco/" + repository_name + "/tree/master"
+src_git_directory = "https://github.com/deMartiniFrancesco/" + \
+    repository_name + "/tree/master"
 readme_path = "/doc/README.md"
 src_path = repo_path + "/src/main/java/deMartiniFrancesco/projects/"
 dir_project_name = "demartini_F_"
@@ -41,10 +42,11 @@ def search_last_update_project(src_directory: str):
         if directory.startswith(dir_project_name)
     ]
     print("Last update: ", max(all_subdirectories, key=os.path.getctime))
-    
+
     print("--- Directory ---")
     for directory in sorted(all_subdirectories, key=os.path.getctime, reverse=True):
-        modify_date = datetime.datetime.fromtimestamp(os.path.getmtime(directory))
+        modify_date = datetime.datetime.fromtimestamp(
+            os.path.getmtime(directory))
         print('Modified on:', modify_date)
     print("------------------")
 
@@ -114,10 +116,12 @@ if __name__ == "__main__":
     if boold:
         print("Start")
 
-
     # search_last_update_project(src_path)
     # update_md(src_path, search_last_update_project(src_path))
-    print(last_project_string(search_last_update_project(src_path)), projects_string(src_path))
+    print(
+        last_project_string(search_last_update_project(src_path)),
+        (src_path)
+    )
 
     if boold:
         print("End")
