@@ -117,11 +117,11 @@ if __name__ == "__main__":
         print("Start")
 
     # search_last_update_project(src_path)
-    # update_md(src_path, search_last_update_project(src_path))
-    print(
-        last_project_string(search_last_update_project(src_path)),
-        (src_path)
-    )
+    update_md(src_path, search_last_update_project(src_path))
+    # print(
+    #     last_project_string(search_last_update_project(src_path)),
+    #     (src_path)
+    # )
 
     if boold:
         print("End")
