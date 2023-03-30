@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.sql.*;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 class ETL_ALUNNI {
@@ -28,7 +27,7 @@ class ETL_ALUNNI {
             if (existTable(tableName)) {
                 dropTable(tableName);
             }
-            createTable(tableName);
+            createTableAlunno();
 
         } catch (SQLException ex) {
             // handle any errors
@@ -73,7 +72,7 @@ class ETL_ALUNNI {
                             
                 PRIMARY KEY (matricola)
                 );
-                """, ALUNNO));
+                """, tableName));
         System.out.println("ETL_ALUNNI.createTableAlunno");
     }
 
@@ -96,7 +95,7 @@ class ETL_ALUNNI {
                     )
                 VALUES
                     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-                """, ALUNNO);
+                """, tableName);
 
         List<Integer> statementTypes = Arrays.asList(
                 Types.INTEGER,
@@ -192,8 +191,8 @@ class ETL_ALUNNITest {
         ETL_ALUNNI etlAlunni = new ETL_ALUNNI();
 
         try {
-            etlAlunni.loadLezioniCsv(resourcesPath + "export_alunni.csv");
-        } catch (SQLException | IOException | ParseException e) {
+            etlAlunni.loadCsv(resourcesPath + "export_alunni.csv");
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
