@@ -182,5 +182,6 @@ public class JdbcEx02 {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
+        scanner.close();
     }
 }

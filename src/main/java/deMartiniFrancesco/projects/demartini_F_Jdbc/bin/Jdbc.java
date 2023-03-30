@@ -15,8 +15,7 @@ class Jdbc {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://172.16.1.99:3306/db99999",
                     "ut99999",
-                    "pw99999"
-            );
+                    "pw99999");
             if (existTable(DOCENTE)) {
                 System.out.println("exist " + DOCENTE);
                 dropTable(DOCENTE);
@@ -54,24 +53,25 @@ class Jdbc {
 
     public void createLezioiTable() throws SQLException {
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE " + LEZIONE + """
-                (
-                 "id"           bigint NOT NULL AUTO_INCREMENT ,
-                 "classe"       varchar(45) NULL ,
-                 "docente_id"   bigint NOT NULL ,
-                 "docente_id_2" bigint NOT NULL ,
-                 "materia"      varchar(45) NOT NULL ,
-                 "aula"         varchar(45) NULL ,
-                 "giorno"       int NOT NULL ,
-                 "ora"          int NOT NULL ,
-                                
-                PRIMARY KEY ("id"),
-                KEY "FK_docente" ("docente_id"),
-                CONSTRAINT "FK_2" FOREIGN KEY "FK_docente" ("docente_id") REFERENCES "docente_deMartini" ("docente_id"),
-                KEY "FK_docente_2" ("docente_id_2"),
-                CONSTRAINT "FK_1" FOREIGN KEY "FK_docente_2" ("docente_id_2") REFERENCES "docente_deMartini" ("docente_id")
-                );
-                """);
+        statement.execute("CREATE TABLE " + LEZIONE
+                + """
+                        (
+                         "id"           bigint NOT NULL AUTO_INCREMENT ,
+                         "classe"       varchar(45) NULL ,
+                         "docente_id"   bigint NOT NULL ,
+                         "docente_id_2" bigint NOT NULL ,
+                         "materia"      varchar(45) NOT NULL ,
+                         "aula"         varchar(45) NULL ,
+                         "giorno"       int NOT NULL ,
+                         "ora"          int NOT NULL ,
+
+                        PRIMARY KEY ("id"),
+                        KEY "FK_docente" ("docente_id"),
+                        CONSTRAINT "FK_2" FOREIGN KEY "FK_docente" ("docente_id") REFERENCES "docente_deMartini" ("docente_id"),
+                        KEY "FK_docente_2" ("docente_id_2"),
+                        CONSTRAINT "FK_1" FOREIGN KEY "FK_docente_2" ("docente_id_2") REFERENCES "docente_deMartini" ("docente_id")
+                        );
+                        """);
         System.out.println("Jdbc.createLezioiTable");
     }
 
@@ -81,13 +81,12 @@ class Jdbc {
                 (
                    "docente_id"   bigint NOT NULL ,
                    "nome_cognome" varchar(45) NOT NULL ,
-                  
+
                   PRIMARY KEY ("docente_id")
                   );
                 """);
         System.out.println("Jdbc.createDocenteTable");
     }
-
 
     public void loadLezioniCsv(String csvFilePath) throws SQLException, IOException {
 
@@ -108,18 +107,18 @@ class Jdbc {
             String materia = data[3];
             String aula = data[4];
             int giorno = Integer.parseInt(data[5]);
-            int ora= Integer.parseInt(data[6]);
+            int ora = Integer.parseInt(data[6]);
 
-//            statement.setString(1, courseName);
-//            statement.setString(2, studentName);
-//
-//            Timestamp sqlTimestamp = Timestamp.valueOf(timestamp);
-//            statement.setTimestamp(3, sqlTimestamp);
-//
-//            float fRating = Float.parseFloat(rating);
-//            statement.setFloat(4, fRating);
-//
-//            statement.setString(5, comment);
+            // statement.setString(1, courseName);
+            // statement.setString(2, studentName);
+            //
+            // Timestamp sqlTimestamp = Timestamp.valueOf(timestamp);
+            // statement.setTimestamp(3, sqlTimestamp);
+            //
+            // float fRating = Float.parseFloat(rating);
+            // statement.setFloat(4, fRating);
+            //
+            // statement.setString(5, comment);
 
             statement.addBatch();
         }
@@ -133,19 +132,16 @@ class JdbcTest {
 
         System.out.println("Start");
 
-        //              CALCOLO PATH RELATIVO UNIVERSALE
-        //----------------------------------------------------------------------
+        // CALCOLO PATH RELATIVO UNIVERSALE
+        // ----------------------------------------------------------------------
         String tempPath = new File(
-                String.valueOf(Jdbc.class.getPackage()).replace("package ", "").replace(".", "/")
-        ).getParent();
+                String.valueOf(Jdbc.class.getPackage()).replace("package ", "").replace(".", "/")).getParent();
         String srcPath = "/src/main/java/";
         File uesrPath = new File(System.getProperty("user.dir"));
-        String projectPath = uesrPath.getName().equals(tempPath) ?
-                uesrPath.getPath() :
-                new File(uesrPath.getPath() + srcPath).exists() ?
-                        uesrPath.getPath() + srcPath + tempPath :
-                        uesrPath.getPath() + tempPath;
-        //----------------------------------------------------------------------
+        String projectPath = uesrPath.getName().equals(tempPath) ? uesrPath.getPath()
+                : new File(uesrPath.getPath() + srcPath).exists() ? uesrPath.getPath() + srcPath + tempPath
+                        : uesrPath.getPath() + tempPath;
+        // ----------------------------------------------------------------------
 
         // COSTANTI
         String resourcesPath = projectPath + "/file/";
